@@ -1,0 +1,233 @@
+commands:
+sudo su hduser
+
+password: student
+
+cd /usr/local/hive
+
+# Start Hadoop daemons in the background.
+
+start-dfs.sh
+
+start-yarn.sh
+
+cd bin
+
+jps
+
+./hive
+
+#create a database and use it
+
+hive-> "CREATE DATABASE mydb;"
+
+hive-> "USE mydb;"
+
+#create table in hive
+hive-> "CREATE TABLE students (id int, name string, age int);"
+
+#Load data from file in table
+hive-> "LOAD DATA LOCAL INPATH '/home/hduser/students.txt' overwrite INTO TABLE students;"
+
+#show tables in current DATABASE
+hive-> "SHOW TABLES;"
+
+#describe the structure of the table
+hive-> "DESCRIBE students;"
+
+#select records from the table
+hive-> "SELECT * FROM students;
+
+#alter table in hive
+hive-> "ALTER TABLE students ADD COLUMN email string;"  #add column to existing table
+
+hive-> "ALTER TABLE students DROP COLUMN age;"          #delete column from existing table
+
+#insert new record into the table
+hive-> "INSERT INTO TABLE students VALUES(102,'John',35,'john@gmail.com');"
+
+#update existing record in the table
+hive-> "UPDATE students SET name='Jane' WHERE id=102;"
+
+#querying with join operation
+hive-> "SELECT s.name, c.city FROM students s JOIN cities c ON(s.age = c.population);"
+
+
+
+
+FLIGHT INFO
+
+1. On hive shell: Create hive table, flight_data:
+
+
+CREATE TABLE flight_data(
+   year INT,
+   month INT,
+   day INT,
+   day_of_week INT,
+   dep_time INT,
+   crs_dep_time INT,
+   arr_time INT,
+   crs_arr_time INT,
+   unique_carrier STRING,
+   flight_num INT,
+   tail_num STRING,
+   actual_elapsed_time INT,
+   crs_elapsed_time INT,
+   air_time INT,
+   arr_delay INT,
+   dep_delay INT,
+   origin STRING,
+   dest STRING,
+   distance INT,
+   taxi_in INT,
+   taxi_out INT,
+   cancelled INT,
+   cancellation_code STRING,
+   diverted INT,
+   carrier_delay STRING,
+   weather_delay STRING,
+   nas_delay STRING,
+   security_delay STRING,
+   late_aircraft_delay STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+
+2.Load the data into the table:
+
+LOAD DATA LOCAL INPATH '/home/cloudera/2008.csv' OVERWRITE INTO TABLE flight_data;
+
+
+3.Ensure the table got created and loaded fine:
+
+SHOW TABLES;
+SELECT
+   *
+FROM
+   flight_data
+LIMIT 10; 
+
+4.Query the table. Find average arrival delay for all flights departing SFO in January:
+
+
+SELECT
+   avg(arr_delay)
+FROM
+   flight_data
+WHERE
+   month=1
+   AND origin='SFO';
+
+5. On hive shell: create the airports table
+
+
+CREATE TABLE airports(
+   name STRING,
+   country STRING,
+   area_code INT,
+   code STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+6.Load data into airports table:
+
+
+LOAD DATA LOCAL INPATH 'hive-impala-bdtc/airports.csv' OVERWRITE INTO TABLE airports;
+
+7.On hive shell, list some rows from the airports table:
+
+
+SELECT
+   *
+FROM
+   airports
+LIMIT 10
+
+8.On hive shell: run a join query to find the average delay in January 2008 for each airport and to print out the airport's name:
+
+
+SELECT
+   name,
+   AVG(arr_delay)
+FROM
+   flight_data f
+   INNER JOIN airports a
+   ON (f.origin=a.code)
+WHERE
+   month=1
+GROUP BY
+   name;
+
+9.Find average departure delay per day in 2008
+hive>select day,avg(dep_delay) from flight_data group by day;
+
+
+10.Create Index on Flight Information System Table
+
+hive> CREATE INDEX origin_index ON TABLE flight_data (origin) AS
+    > 'COMPACT' WITH DEFERRED REBUILD;
+OK
+Time taken: 0.388 seconds
+SHOW CREATED INDEX
+
+hive> CREATE INDEX origin_index ON TABLE flight_data (origin) AS
+    > 'COMPACT' WITH DEFERRED REBUILD;
+OK
+Time taken: 0.388 seconds
+
+
+
+
+#HIVE MAIN
+ 
+commands:
+sudo su hduser
+
+password: student
+
+cd /usr/local/hive
+
+# Start Hadoop daemons in the background.
+
+start-dfs.sh
+
+start-yarn.sh
+
+cd bin
+
+jps
+
+./hive
+
+hive-> create database folder;
+hive-> use folder;
+hive-> create table flight(fno int, source varchar(18),year int, delay float)
+   -> row format DELIMITED
+   -> fields terminated by ","
+   -> lines terminated by '\n'
+   -> stored as textfile;
+
+hive-> insert into flight values(215,"pune",2024,15.00);
+hive-> add more data in the table;
+
+hive-> select * from flight;
+hive-> load data local inpath "path of file"
+   -> overwrite into table flight;
+
+hive-> select * from flight;
+
+hive-> create table nflight(fno int, dest varchar(10), year int)
+   -> row format DELIMITED
+   -> fields terminated by ","
+   -> lines terminated by "\n";
+   -> stored as textfile;
+
+hive-> insert into nflight values(225,'mumbai',2024);
+hive-> select * from nflight;
+hive-> add more data;
+
+hive-> select a.fno, a.source, a.year, b.dest
+   -> from flight a join nflight b
+   -> on a.fno=b.fno;

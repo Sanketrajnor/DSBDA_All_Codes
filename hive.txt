@@ -1,0 +1,386 @@
+student@student-HP-Pro-3330-MT:~$ sudo su hduser
+[sudo] password for student: 
+hduser@student-HP-Pro-3330-MT:/home/student$ cd ..
+hduser@student-HP-Pro-3330-MT:/home$ cd ..
+hduser@student-HP-Pro-3330-MT:/$ cd usr/local/hive/bin
+hduser@student-HP-Pro-3330-MT:/usr/local/hive/bin$ start-dfs.sh
+24/04/25 10:41:25 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Starting namenodes on [localhost]
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-student-HP-Pro-3330-MT.out
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-student-HP-Pro-3330-MT.out
+Starting secondary namenodes [0.0.0.0]
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-student-HP-Pro-3330-MT.out
+24/04/25 10:41:43 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+hduser@student-HP-Pro-3330-MT:/usr/local/hive/bin$ start-yarn.sh
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-student-HP-Pro-3330-MT.out
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-student-HP-Pro-3330-MT.out
+hduser@student-HP-Pro-3330-MT:/usr/local/hive/bin$ jps
+3792 NodeManager
+4130 Jps
+3122 NameNode
+3492 SecondaryNameNode
+3253 DataNode
+3663 ResourceManager
+hduser@student-HP-Pro-3330-MT:/usr/local/hive/bin$ ./hive
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/log4j-slf4j-impl-2.4.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-2.1.1.jar!/hive-log4j2.properties Async: true
+Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+hive> show databases;
+OK
+db1
+db2
+db3
+db74
+default
+flight_record
+flights
+hb
+schedule
+tanveer
+tanveerkaran
+test
+thanos
+yaduraj
+Time taken: 1.402 seconds, Fetched: 14 row(s)
+hive> create database stranger;
+OK
+Time taken: 0.832 seconds
+hive> show databases;
+OK
+db1
+db2
+db3
+db74
+default
+flight_record
+flights
+hb
+schedule
+stranger
+tanveer
+tanveerkaran
+test
+thanos
+yaduraj
+Time taken: 0.024 seconds, Fetched: 15 row(s)
+hive> use stranger;
+OK
+Time taken: 0.014 seconds
+hive> show tables;
+OK
+Time taken: 0.212 seconds
+hive> create table doctor(doc_id int, doc_name string,special string);
+OK
+Time taken: 1.052 seconds
+hive> create table patient(pat_id int, pat_name string,age int);
+OK
+Time taken: 0.113 seconds
+hive> create table medicine(price int,qty int,name string);
+OK
+Time taken: 0.101 seconds
+hive> insert into table doctor values(01,"Yash Varma","Neurologist"),
+    > (02,"Abhishek Singh","Heart Spec."),
+    > (03,"Kamlesh Kumawat","Liver Spec.");
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hduser_20240425105952_78969147-376e-4058-8cdc-94065e279f85
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1714021958315_0001, Tracking URL = http://student-HP-Pro-3330-MT:8088/proxy/application_1714021958315_0001/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1714021958315_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2024-04-25 11:00:24,104 Stage-1 map = 0%,  reduce = 0%
+2024-04-25 11:00:47,054 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.2 sec
+MapReduce Total cumulative CPU time: 2 seconds 200 msec
+Ended Job = job_1714021958315_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/stranger.db/doctor/.hive-staging_hive_2024-04-25_10-59-52_691_3292171009977523598-1/-ext-10000
+Loading data to table stranger.doctor
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.2 sec   HDFS Read: 4432 HDFS Write: 155 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 200 msec
+OK
+Time taken: 61.135 seconds
+hive> show table doctor;
+MismatchedTokenException(26!=110)
+	at org.antlr.runtime.BaseRecognizer.recoverFromMismatchedToken(BaseRecognizer.java:617)
+	at org.antlr.runtime.BaseRecognizer.match(BaseRecognizer.java:115)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.showStatement(HiveParser.java:20763)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2838)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1756)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1178)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:204)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:444)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1242)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1384)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1171)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1161)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:232)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:183)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:399)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:776)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:714)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:641)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:11 mismatched input 'doctor' expecting EXTENDED near 'table' in show statement
+hive> desc doctor;
+OK
+doc_id              	int                 	                    
+doc_name            	string              	                    
+special             	string              	                    
+Time taken: 0.129 seconds, Fetched: 3 row(s)
+hive> select * from doctor;
+OK
+1	Yash Varma	Neurologist
+2	Abhishek Singh	Heart Spec.
+3	Kamlesh Kumawat	Liver Spec.
+Time taken: 0.281 seconds, Fetched: 3 row(s)
+hive> insert into table patient values(01,"Darshan Deshmukh",21),
+    > (02,"Sumit Patil",25),
+    > (03,"Sanket Rajnor",32);
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hduser_20240425110349_1ce340f2-906c-4adc-82c2-64d78ee06968
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1714021958315_0002, Tracking URL = http://student-HP-Pro-3330-MT:8088/proxy/application_1714021958315_0002/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1714021958315_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2024-04-25 11:04:06,791 Stage-1 map = 0%,  reduce = 0%
+2024-04-25 11:04:20,218 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.21 sec
+MapReduce Total cumulative CPU time: 2 seconds 210 msec
+Ended Job = job_1714021958315_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/stranger.db/patient/.hive-staging_hive_2024-04-25_11-03-49_762_4534713500501255151-1/-ext-10000
+Loading data to table stranger.patient
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.21 sec   HDFS Read: 4412 HDFS Write: 130 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 210 msec
+OK
+Time taken: 35.069 seconds
+hive> insert into table medicine values(120,40,"Cipla X-20"),
+    > (250,60,"Aerocita"),
+    > (400,20,"Ostrifill");
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hduser_20240425110642_a63aad3f-b3c8-455a-90c0-9ecc90fdbae1
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1714021958315_0003, Tracking URL = http://student-HP-Pro-3330-MT:8088/proxy/application_1714021958315_0003/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1714021958315_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2024-04-25 11:06:58,934 Stage-1 map = 0%,  reduce = 0%
+2024-04-25 11:07:07,250 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.25 sec
+MapReduce Total cumulative CPU time: 2 seconds 250 msec
+Ended Job = job_1714021958315_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/stranger.db/medicine/.hive-staging_hive_2024-04-25_11-06-42_039_2296046379715348999-1/-ext-10000
+Loading data to table stranger.medicine
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.25 sec   HDFS Read: 4394 HDFS Write: 124 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 250 msec
+OK
+Time taken: 28.711 seconds
+hive> select * from doctor;
+OK
+1	Yash Varma	Neurologist
+2	Abhishek Singh	Heart Spec.
+3	Kamlesh Kumawat	Liver Spec.
+Time taken: 0.129 seconds, Fetched: 3 row(s)
+hive> select * from patient;
+OK
+1	Darshan Deshmukh	21
+2	Sumit Patil	25
+3	Sanket Rajnor	32
+Time taken: 0.134 seconds, Fetched: 3 row(s)
+hive> select * from medicine;
+OK
+120	40	Cipla X-20
+250	60	Aerocita
+400	20	Ostrifill
+Time taken: 0.107 seconds, Fetched: 3 row(s)
+hive> alter table patient add columns (illness string);
+OK
+Time taken: 0.331 seconds
+hive> select * from patient
+    > ;
+OK
+1	Darshan Deshmukh	21	NULL
+2	Sumit Patil	25	NULL
+3	Sanket Rajnor	32	NULL
+Time taken: 0.124 seconds, Fetched: 3 row(s)
+hive> alter table patient where pat_id=1 set illness="Fever";
+NoViableAltException(305@[])
+	at org.apache.hadoop.hive.ql.parse.HiveParser.alterTableStatementSuffix(HiveParser.java:8010)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.alterStatement(HiveParser.java:7446)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2808)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1756)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1178)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:204)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:444)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1242)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1384)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1171)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1161)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:232)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:183)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:399)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:776)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:714)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:641)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:20 cannot recognize input near 'where' 'pat_id' '=' in alter table statement
+hive> alter table patient where pat_id = 1 set illness="Fever";
+NoViableAltException(305@[])
+	at org.apache.hadoop.hive.ql.parse.HiveParser.alterTableStatementSuffix(HiveParser.java:8010)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.alterStatement(HiveParser.java:7446)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2808)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1756)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1178)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:204)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:444)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1242)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1384)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1171)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1161)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:232)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:183)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:399)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:776)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:714)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:641)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:20 cannot recognize input near 'where' 'pat_id' '=' in alter table statement
+hive> update patient set illness="Fever" where pat_id=1;;
+FAILED: SemanticException [Error 10294]: Attempt to do update or delete using transaction manager that does not support these operations.
+hive> update patient set illness="Fever" where pat_id=1;
+FAILED: SemanticException [Error 10294]: Attempt to do update or delete using transaction manager that does not support these operations.
+hive> select d.doc_id, doc_name, p.pat_name, p.age from doctor d join patient p on (d.doc_id=p.pat_id);
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hduser_20240425111815_02da7588-ef51-4a4d-af6d-caeb1b74527d
+Total jobs = 1
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/log4j-slf4j-impl-2.4.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+2024-04-25 11:18:28	Starting to launch local task to process map join;	maximum memory = 477626368
+2024-04-25 11:18:30	Dump the side-table for tag: 1 with group count: 3 into file: file:/tmp/hduser/a33832f1-8f33-4330-9db4-7932f38b748e/hive_2024-04-25_11-18-15_348_3796776716572301718-1/-local-10004/HashTable-Stage-3/MapJoin-mapfile01--.hashtable
+2024-04-25 11:18:30	Uploaded 1 File to: file:/tmp/hduser/a33832f1-8f33-4330-9db4-7932f38b748e/hive_2024-04-25_11-18-15_348_3796776716572301718-1/-local-10004/HashTable-Stage-3/MapJoin-mapfile01--.hashtable (363 bytes)
+2024-04-25 11:18:30	End of local task; Time Taken: 2.12 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1714021958315_0004, Tracking URL = http://student-HP-Pro-3330-MT:8088/proxy/application_1714021958315_0004/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1714021958315_0004
+Hadoop job information for Stage-3: number of mappers: 1; number of reducers: 0
+2024-04-25 11:18:45,195 Stage-3 map = 0%,  reduce = 0%
+2024-04-25 11:18:55,628 Stage-3 map = 100%,  reduce = 0%, Cumulative CPU 2.31 sec
+MapReduce Total cumulative CPU time: 2 seconds 310 msec
+Ended Job = job_1714021958315_0004
+MapReduce Jobs Launched: 
+Stage-Stage-3: Map: 1   Cumulative CPU: 2.31 sec   HDFS Read: 6861 HDFS Write: 223 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 310 msec
+OK
+1	Yash Varma	Darshan Deshmukh	21
+2	Abhishek Singh	Sumit Patil	25
+3	Kamlesh Kumawat	Sanket Rajnor	32
+Time taken: 43.5 seconds, Fetched: 3 row(s)
+hive> create index cidx on table medicine(name) as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler' with defered rebuild;
+MismatchedTokenException(26!=86)
+	at org.antlr.runtime.BaseRecognizer.recoverFromMismatchedToken(BaseRecognizer.java:617)
+	at org.antlr.runtime.BaseRecognizer.match(BaseRecognizer.java:115)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.autoRebuild(HiveParser.java:6464)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.createIndexStatement(HiveParser.java:6007)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:2928)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:1756)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1178)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:204)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:444)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1242)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1384)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1171)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1161)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:232)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:183)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:399)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:776)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:714)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:641)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:112 mismatched input 'defered' expecting KW_DEFERRED near 'with' in auto rebuild index
+hive> create index cidx on table medicine(name) as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler' with deferred rebuild;
+OK
+Time taken: 0.622 seconds
+hive> select avg(price) from medicine;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = hduser_20240425112310_24d325d9-acf5-4271-b0c9-dd3dbb68043a
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1714021958315_0005, Tracking URL = http://student-HP-Pro-3330-MT:8088/proxy/application_1714021958315_0005/
+Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1714021958315_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2024-04-25 11:23:29,261 Stage-1 map = 0%,  reduce = 0%
+2024-04-25 11:23:42,368 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.03 sec
+2024-04-25 11:24:03,878 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.84 sec
+MapReduce Total cumulative CPU time: 4 seconds 840 msec
+Ended Job = job_1714021958315_0005
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.84 sec   HDFS Read: 8596 HDFS Write: 117 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 840 msec
+OK
+256.6666666666667
+Time taken: 56.423 seconds, Fetched: 1 row(s)
+hive> show index on medicine
+    > ;
+OK
+cidx                	medicine            	name                	stranger__medicine_cidx__	compact             	
+Time taken: 0.166 seconds, Fetched: 1 row(s)
+hive> exit;
+
+//for load csv file in local path
+insert overwrite local directory '/home/---/output.csv' select * from table
